@@ -2,9 +2,20 @@ apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
   name: example-argocd
+  namespace: argocd  # Ensure the namespace is correct or adjust as needed
   labels:
     example: basic
 spec:
   server:
     service:
-      type: NodePort
+      type: NodePort  # Makes Argo CD UI accessible via a NodePort
+    ingress:
+      enabled: false  # disable if you're not using ingress
+  dex:
+    disabled: true    # optional: disable Dex if using basic auth or external SSO
+  resourceTrackingMethod: label
+  repositoryCredentials:
+    - url: https://github.com/iamkashaan/nodejsapp.git
+  rbac:
+    defaultPolicy: 'role:readonly'
+  statusBadgeEnabled: true
