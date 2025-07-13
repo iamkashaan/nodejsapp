@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DOCKER_IMAGE: kashaan69/ultimate-cicd:${{ github.run_number }}
+      DOCKER_IMAGE: kashaankhan/kashaan-portfolio:${{ github.run_number }}
 
     steps:
       - name: Checkout Source Code
@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Run Tests (Optional)
-        run: npm test || echo "No tests found"  # Skip error if no tests
+        run: npm test || echo "No tests found"
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "iamkashaan"
           git config user.email "mohdkashaan2002.mk@gmail.com"
-          sed -i "s/replaceImageTag/${{ github.run_number }}/g k8s/deployment.yml
+          sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
           git add k8s/deployment.yml
-          git commit -m "Update deployment image to version ${{ github.run_number }}"
+          git diff --quiet && echo "No changes to commit" || git commit -m "Update deployment image to version ${{ github.run_number }}"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
