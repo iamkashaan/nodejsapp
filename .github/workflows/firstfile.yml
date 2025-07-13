@@ -52,7 +52,7 @@ jobs:
             sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
             git add k8s/deployment.yml
             git diff --cached --quiet || git commit -m "Update deployment image to version ${{ github.run_number }}"
-            git push https://${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/kashaan-portfolio.git HEAD:main
           else
             echo "k8s/deployment.yml not found, skipping deployment update."
           fi
