@@ -43,7 +43,7 @@ jobs:
 
       - name: Update Deployment YAML and Push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           git config user.name "iamkashaan"
           git config user.email "mohdkashaan2002.mk@gmail.com"
