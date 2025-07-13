@@ -43,11 +43,16 @@ jobs:
 
       - name: Update Deployment YAML and Push
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRETTOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git config user.name "iamkashaan"
           git config user.email "mohdkashaan2002.mk@gmail.com"
-          sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
-          git add k8s/deployment.yml
-          git diff --quiet && echo "No changes to commit" || git commit -m "Update deployment image to version ${{ github.run_number }}"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
+
+          if [ -f k8s/deployment.yml ]; then
+            sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
+            git add k8s/deployment.yml
+            git diff --cached --quiet || git commit -m "Update deployment image to version ${{ github.run_number }}"
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
+          else
+            echo "k8s/deployment.yml not found, skipping deployment update."
+          fi
