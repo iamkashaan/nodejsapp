@@ -27,26 +27,26 @@ jobs:
       - name: Run Tests (Optional)
         run: npm test || echo "No tests found"
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERUSERNAME }}
-          password: ${{ secrets.DOCKERPASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}  # ✅ Make sure this name matches your secret
+          password: ${{ secrets.DOCKER_PASSWORD }}  # ✅ Same here
 
       - name: Build and Push Docker Image
         run: |
           docker build -t $DOCKER_IMAGE .
           docker push $DOCKER_IMAGE
 
-      - name: Update Deployment YAML and Push
+      - name: Update Kubernetes Deployment YAML and Push to Repo
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # ✅ Make sure this is a Personal Access Token with repo scope
         run: |
-          git config user.name "iamkashaan"
-          git config user.email "mohdkashaan2002.mk@gmail.com"
+          git config --global user.name "iamkashaan"
+          git config --global user.email "mohdkashaan2002.mk@gmail.com"
 
           if [ -f k8s/deployment.yml ]; then
             sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
@@ -54,5 +54,5 @@ jobs:
             git diff --cached --quiet || git commit -m "Update deployment image to version ${{ github.run_number }}"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/kashaan-portfolio.git HEAD:main
           else
-            echo "k8s/deployment.yml not found, skipping deployment update."
+            echo "⚠️ k8s/deployment.yml not found. Skipping image update."
           fi
