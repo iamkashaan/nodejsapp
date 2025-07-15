@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/iamkashaan/nodejsapp
-    targetRevision: HEAD
+    targetRevision: main
     path: .
   destination:
     server: https://kubernetes.default.svc
