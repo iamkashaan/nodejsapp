@@ -11,7 +11,7 @@ spec:
     path: argocd
   destination:
     server: https://kubernetes.default.svc
-    namespace: ls  # <-- changed to 'ls'
+    namespace: nodejs-app  # <-- changed from 'ls' to avoid conflict
   syncPolicy:
     automated:
       prune: true
