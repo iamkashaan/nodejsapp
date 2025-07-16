@@ -1,12 +1,1 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: kashaan-portfolio-service
-spec:
-  selector:
-    app: kashaan-portfolio
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-  type: NodePort  # or NodePort if using minikube
+
