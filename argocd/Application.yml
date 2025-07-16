@@ -7,14 +7,15 @@ spec:
   project: default
   source:
     repoURL: https://github.com/iamkashaan/nodejsapp
-     targetRevision: main
-    path: argocd
+    targetRevision: main
+    path: argocd/k8s   # ✅ where your deployment.yaml and service.yaml exist
   destination:
     server: https://kubernetes.default.svc
-    namespace: nodejs-app  # <-- changed from 'ls' to avoid conflict
+    namespace: nodejs-app
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
