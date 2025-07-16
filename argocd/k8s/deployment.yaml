@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: portfolio-container
-          image: kashaankhan/kashaan-portfolio:replaceImageTag
+          image: kashaankhan/kashaan-portfolio:41
           ports:
             - containerPort: 3000
           imagePullPolicy: Always
