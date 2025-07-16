@@ -54,7 +54,7 @@ jobs:
             sed -i "s|replaceImageTag|${{ github.run_number }}|g" "$DEPLOYMENT_FILE"
             git add "$DEPLOYMENT_FILE"
             git diff --cached --quiet || git commit -m "🚀 Update image to version ${{ github.run_number }}"
-            git push https://iamkashaan:${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/kashaan-portfolio.git HEAD:main
+            git push https://iamkashaan:${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
           else
             echo "⚠️ $DEPLOYMENT_FILE not found. Skipping image update."
           fi
