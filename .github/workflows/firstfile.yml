@@ -57,3 +57,4 @@ jobs:
             git push https://iamkashaan:${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/kashaan-portfolio.git HEAD:main
           else
             echo "⚠️ $DEPLOYMENT_FILE not found. Skipping image update."
+          fi
