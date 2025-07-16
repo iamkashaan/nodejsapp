@@ -45,16 +45,16 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config --global user.name "iamkashaan"
-          git config --global user.email "mohdkashaan2002.mk@gmail.com"
+         git config --global user.name "iamkashaan"
+         git config --global user.email "mohdkashaan2002.mk@gmail.com"
 
-          DEPLOYMENT_FILE="argocd/k8s/deployment.yaml"
+         DEPLOYMENT_FILE="argocd/k8s/deployment.yaml"
 
-          if [ -f "$DEPLOYMENT_FILE" ]; then
-            sed -i "s|replaceImageTag|${{ github.run_number }}|g" "$DEPLOYMENT_FILE"
-            git add "$DEPLOYMENT_FILE"
-            git diff --cached --quiet || git commit -m "🚀 Update image to version ${{ github.run_number }}"
-            git push https://iamkashaan:${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
-          else
-            echo "⚠️ $DEPLOYMENT_FILE not found. Skipping image update."
-          fi
+         if [ -f "$DEPLOYMENT_FILE" ]; then
+           sed -i "s|replaceImageTag|35|g" "$DEPLOYMENT_FILE"
+           git add "$DEPLOYMENT_FILE"
+           git diff --cached --quiet || git commit -m "🚀 Update image to version 35"
+           git push https://iamkashaan:${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/nodejsapp.git HEAD:main
+         else
+           echo "⚠️ $DEPLOYMENT_FILE not found. Skipping image update."
+         fi
