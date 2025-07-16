@@ -49,7 +49,7 @@ jobs:
           git config --global user.email "mohdkashaan2002.mk@gmail.com"
 
           if [ -f k8s/deployment.yml ]; then
-            sed -i "s/replaceImageTag/${{ github.run_number }}/g" k8s/deployment.yml
+            sed -i "s/replaceImageTag/${{ github.run_number }}/g" argocd/k8s/deployment.yml
             git add k8s/deployment.yml
             git diff --cached --quiet || git commit -m "Update deployment image to version ${{ github.run_number }}"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/iamkashaan/kashaan-portfolio.git HEAD:main
