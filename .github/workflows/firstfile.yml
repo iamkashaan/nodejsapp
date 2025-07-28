@@ -9,8 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # IMPORTANT: Grant write permissions to the GITHUB_TOKEN for this job.
-    # This allows the workflow to push changes back to the repository.
+    # Grant write permissions to the GITHUB_TOKEN for this job
     permissions:
       contents: write
 
@@ -46,7 +45,7 @@ jobs:
           docker build -t $DOCKER_IMAGE .
           docker push $DOCKER_IMAGE
 
-     - name: 📝 Update Kubernetes Deployment and Push
+      - name: 📝 Update Kubernetes Deployment and Push
         run: |
           # Configure Git with the GitHub Actions bot user
           git config --global user.name "github-actions[bot]"
