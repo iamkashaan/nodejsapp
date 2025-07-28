@@ -46,33 +46,26 @@ jobs:
           docker build -t $DOCKER_IMAGE .
           docker push $DOCKER_IMAGE
 
-      - name: 📝 Update Kubernetes Deployment and Push
+     - name: 📝 Update Kubernetes Deployment and Push
         run: |
-          # Configure Git with the GitHub Actions bot user for clear commit attribution.
+          # Configure Git with the GitHub Actions bot user
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Define the path to your deployment file
           DEPLOYMENT_FILE="argocd/k8s/deployment.yaml"
+          
+          # Use sed with a regular expression to replace the image tag
+          # This finds the line with the image name and replaces the tag (any number) with the new run number
+          sed -i "s|\(image: kashaankhan/kashaan-portfolio:\)[0-9]*|\1${{ github.run_number }}|" $DEPLOYMENT_FILE
 
-          if [ -f "$DEPLOYMENT_FILE" ]; then
-            # Use sed to replace the image tag with the current GitHub run number.
-            # We use a temporary file and then move it to ensure compatibility.
-            sed "s|replaceImageTag|${{ github.run_number }}|g" "$DEPLOYMENT_FILE" > "$DEPLOYMENT_FILE.tmp" && mv "$DEPLOYMENT_FILE.tmp" "$DEPLOYMENT_FILE"
-            
-            # Add the modified deployment file to the Git staging area.
-            git add "$DEPLOYMENT_FILE"
-            
-            # Check if there are actual changes before attempting to commit.
-            # This prevents creating empty commits if the file content hasn't changed.
-            if ! git diff --cached --quiet; then
-              # Commit the changes with a descriptive message.
-              git commit -m "🚀 Update image to version ${{ github.run_number }}"
-              # Push the changes to the 'main' branch.
-              # The GITHUB_TOKEN automatically handles authentication for pushes to the same repo.
-              git push
-            else
-              echo "No changes detected in $DEPLOYMENT_FILE. Skipping commit and push."
-            fi
+          # Stage the changed file
+          git add $DEPLOYMENT_FILE
+
+          # Commit and push if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "🚀 Deploy: Update image to version ${{ github.run_number }}"
+            git push
           else
-            echo "⚠️ $DEPLOYMENT_FILE not found. Skipping image update."
+            echo "No changes detected in deployment file. Skipping commit."
           fi
